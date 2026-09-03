@@ -1,5 +1,5 @@
 The Reality Behind the Code
-ROS (Rana Operating System) is the brainchild of Rana Halder, a developer whose journey is defined by raw passion and relentless struggle. While operating systems are typically built on powerful computers and multi-monitor setups, Rana did not have access to a PC or laptop due to severe financial hardships. Building this OS on a smartphone wasn't an experimental choice made for novelty—it was the only option he had.
+ROS (Rana Operating System) is the brainchild of Rana Halder(Born on 22 April 2010), a developer whose journey is defined by raw passion and relentless struggle. While operating systems are typically built on powerful computers and multi-monitor setups, Rana did not have access to a PC or laptop due to severe financial hardships. Building this OS on a smartphone wasn't an experimental choice made for novelty—it was the only option he had.
 Driven by an intense desire to create something from scratch, Rana spent countless days and sleepless nights glued to a small mobile screen, typing thousands of lines of low-level code. He poured his heart and soul into this project to prove that lack of resources cannot stop a true engineering mindset.
 The Survival Setup
 Armed with nothing but an Android smartphone and an unbreakable will, Rana orchestrated the entire bare-metal development environment using mobile applications:
