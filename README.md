@@ -1,67 +1,31 @@
-# 🚀 ROS (Rana Operating System) v3.0 — Final Power Edition
-
-An independent, bare-metal, 32-bit monolithic operating system kernel and dynamic interactive shell built completely from scratch.
-
----
-
-## ⚡ The Ultimate Engineering Twist
-What makes **ROS** exceptionally unique is its constrained development infrastructure: **this entire operating system was designed, coded, compiled, linked, and emulated exclusively on an Android smartphone.** 
-
-By leveraging a native mobile Linux subsystem, every line of low-level code was written on a virtual interface, proving that absolute computing engineering requires nothing but sheer architectural logic and determination.
-
----
-
-## 🏗️ System Architecture & Low-Level Mechanics
-
-ROS operates as a pure **Freestanding System**, meaning it completely bypasses standard C libraries (`<stdio.h>`, `<string.h>`) and external operating system APIs. It interfaces directly with raw x86 hardware through explicit memory maps and I/O registers.
-
-### 1. The Bootloader Layer (x86 Assembly)
-* **Real Mode Initialization:** The bootloader wakes up the processor in **16-bit Real Mode**.
-* **Disk I/O Management:** It directly instructs the BIOS to read the raw kernel sectors (allocating up to 50 sectors) sequentially off the storage medium into physical memory.
-* **Protected Mode Transition:** It builds the temporary Global Descriptor Table (GDT), enables the Protected Mode bit in the `cr0` control register, and fires a `Far Jump` to cleanly switch the CPU state into **32-bit Protected Mode**, passing code execution over to the C kernel.
-
-### 2. The Bare-Metal Kernel (Freestanding C)
-* **VGA Hardware Manipulation:** Text rendering, color changes, and window alignments (such as centered ASCII layouts) are achieved by writing directly to the **VGA Text Mode Memory Buffer (`0x000B8000`)** byte by byte.
-* **Custom Core Library:** Features its own isolated utility layer to handle freestanding memory copy (`memcpy`), setting blocks (`memset`), and string manipulation routines without hosting overhead.
-
-### 3. Hardware Interrupts & I/O Ports
-* **IDT Implementation:** Houses a fully functional custom **Interrupt Descriptor Table (IDT)** to register low-level CPU trap handlers and ISRs.
-* **PIC Remapping:** Remaps the dual Intel 8259 Programmable Interrupt Controllers (PIC) via `outb` instructions to separate hardware interrupts from CPU exceptions.
-* **Keyboard Driver:** Catches real-time hardware interrupts (**IRQ1**) triggered by the PS/2 controller via I/O ports (`inb(0x60)`), decoding raw scan codes directly into characters for the interactive CLI shell.
-
----
-
-## 💻 Command Line Interface (CLI) Reference
-
-ROS hosts an optimized, interactive command-line environment parsing dynamic string arguments directly through the custom kernel:
-
-| Command | Usage | Functional Description |
+# 🚀 ROS (Rana Operating System) v3.0 — Final Power Edition An independent, bare-metal, 32-bit monolithic operating system kernel and dynamic hardware-abstracted interactive shell built entirely from scratch. --- ## ⚡ The Ultimate Mobile Engineering Feat What sets **ROS** apart from traditional operating system projects is its highly constrained development infrastructure: **the entire codebase was designed, engineered, compiled, linked, and emulated natively on an Android smartphone.** By leveraging an isolated mobile Linux subsystem (Termux), every single layer of systems-level architecture was mapped on a virtual terminal interface using a mobile layout. This standalone development loop stands as a definitive proof that complex low-level engineering requires nothing but absolute algorithmic logic, bare-metal determination, and pure structural mastery. --- ## 🏗️ Deep-Dive System Architecture & Low-Level Mechanics ROS operates strictly as a **Freestanding Executive System**, bypassing standard C libraries (`<stdio.h>`, `<stdlib.h>`, `<string.h>`) and conventional operating system application interfaces. The kernel controls raw x86 hardware states through direct memory mapping, precise CPU register manipulation, and raw I/O port data streaming. ### 1. High-Precision Bootloader Subsystem (x86 Assembly) * **Real Mode Boot Vector:** Upon machine startup, the hardware enters **16-bit Real Mode**, mapping code execution to the classic BIOS sector address `0x7C00`. * **Raw Disk Sector Direct Memory Access (DMA):** The bootloader initiates Low-Level BIOS Disk Services (`int 0x13`) to perform raw sector polling, reading up to 50 contiguous data sectors sequentially off the storage medium directly into physical memory segments. * **Global Descriptor Table (GDT) Realignment:** To tear down the real-mode segmented limits, the bootloader dynamically constructs a custom 3-entry GDT defining Flat Memory Model segments: a Null Descriptor, a 4GB Flat Code Segment, and a 4GB Flat Data Segment with Ring 0 privileges. * **Protected Mode Execution Swap:** The bootloader loads the GDT using the `lgdt` instruction, sets the Protected Mode Enable (PE) bit in the `cr0` CPU control register, executes an immediate `Far Jump` (`jmp 0x08:pipeline_flush`) to clear the pre-fetch queue, and locks the processor into **32-bit Protected Mode**, instantly routing the execution instruction pointer to the C Kernel Entry point. ### 2. The Bare-Metal Monolithic Kernel (Freestanding C) * **VGA Hardware Level Memory Manipulation:** The kernel completely drives text rendering, screen alignments, custom background configurations, and visual grids by writing characters and attribute tokens directly to the raw **VGA Text Mode Video Framebuffer (`0x000B8000`)**. * **The VGA Attribute Byte Engine:** Each character cell on the matrix consumes 2 bytes of RAM: 1 byte for the raw ASCII token and 1 byte for the color attribute mapping. The kernel calculates explicit memory addresses (`0x000B8000 + (row * 80 + column) * 2`) to stream localized pointer operations on the fly. * **Native Freestanding Memory Core:** Because no native heap primitives exist, the kernel implements its own freestanding algorithms for rapid byte manipulation: * `memset`: Overwrites continuous blocks of raw memory with specified byte flags. * `memcpy`: Moves high-density raw data structures between isolated memory ranges safely. * `strcmp` & `strlen`: Internal string evaluation nodes mapping real-time buffer boundaries for user parsing. ### 3. Advanced Interrupt Architecture & I/O Ports * **Interrupt Descriptor Table (IDT) Configuration:** Houses a structured 256-entry gate array defining system interrupt routing vectors. The kernel loads this layout using the `lidt` instruction, protecting the CPU from unhandled trap fault panics. * **Dual Intel 8259 PIC Remapping Matrix:** By default, hardware interrupts conflict with standard CPU exceptions. The kernel issues explicit `outb` commands to ports `0x20`, `0x21`, `0xA0`, and `0xA1` to shift the master/slave Programmable Interrupt Controller offsets, cleanly separating device events into safe interrupt handling vectors. * **Real-Time Keyboard System Driver:** Captures real-time **IRQ1 Hardware Interrupts** fired by the PS/2 keyboard controller circuit. The registered Interrupt Service Routine (ISR) intercepts the asynchronous event, reads the raw, unbuffered scan codes via hardware I/O ports (`inb(0x60)`), handles shift/release conditions, and maps the output array live onto the command parser buffer. --- ## 💻 Command Line Interface (CLI) Engine Reference The integrated interactive terminal shell acts as a powerful low-level utility deck. It evaluates dynamic string tokens and issues instant operational signals directly to the underlying systems layer: 
+| Shell Command | Execution Syntax | Architectural & Low-Level Action |
 | :--- | :--- | :--- |
-| **`help`** | `help` | Polls the shell context and lists all compiled, executable system commands natively available within the ROS build. |
-| **`clear`** | `clear` | Clears the entire VGA video buffer memory, shifts layout pointer structures, and resets the visual cursor index to `(0,0)` top-left. |
-| **`whoami`** | `whoami` | Emits a hardcoded data sequence identifying the core creator and system architect of this OS (**Rana Halder**). |
-| **`sysinfo`** | `sysinfo` | Queries kernel constants to display the OS name, version tag, runtime architecture, and low-level development credits. |
-| **`rosfetch`** | `rosfetch` | Inspired by Unix utilities like `neofetch`, this streams an advanced, centered ASCII representation of the ROS logo coupled with hardware runtime data. |
-| **`echo`** | `echo [text]` | Evaluates dynamic input pointer arrays, parses multi-token user arguments, and streams the variable string buffer back onto the live terminal terminal display. |
-| **`color`** | `color [bg][fg]` | Overwrites the VGA Attribute Byte across video memory. Accepts a 2-digit hex sequence altering terminal themes instantly (e.g., `color 0a` for Matrix Green, `color 0c` for Danger Red). |
-| **`reboot`** | `reboot` | Generates a critical low-level system cycle. Sends the trigger byte `0xFE` directly to the keyboard controller port `0x64`, causing the physical motherboard to execute an instant hard reset. |
+| **`help`** | `help` | Polls the kernel shell context array, mapping and streaming the complete index of compiled, native system commands to the active display. |
+| **`clear`** | `clear` | Executes a rapid, high-density loop across the entire `0x000B8000` text memory block, blanking cells with empty characters, resetting scrolling indexes, and shifting the hardware cursor to coordinates `(0,0)`. |
+| **`whoami`** | `whoami` | Emits a protected static string array tracking developer credentials and designating the sole sovereign author of the system (**Rana Halder**). |
+| **`sysinfo`** | `sysinfo` | Queries internal static constants to output critical runtime telemetry, including Kernel Version, Processor Mode State, Memory Map Status, and compilation flags. |
+| **`rosfetch`** | `rosfetch` | A lightweight system visual logging tool. Streams a centered, high-density ASCII representation of the ROS architectural logo aligned with specific software version metrics. |
+| **`echo`** | `echo [string_buffer]` | Implements advanced runtime string token parsing. It calculates the byte offset directly following the command string, loads the arbitrary data pointers, and prints the variable buffer live back onto the screen. |
+| **`color`** | `color [hex_attribute]` | Rewrites the VGA Text Mode control byte across video memory segments on the fly. Accepts a 2-character hex mask altering background and foreground layers immediately (e.g., `color 0a` for Matrix Green, `color 0c` for Danger Red). |
+| **`reboot`** | `reboot` | Generates a critical low-level system cycle. Bypasses the software stack and streams the raw pulse byte `0xFE` directly into the keyboard controller configuration port `0x0064`. This instantly triggers the physical motherboard line, forcing a hard CPU pipeline master reset. |
 
 ---
 
-## 🛠️ The Mobile Infrastructure Toolchain
-The entire cross-compilation matrix was configured on a standalone Android mobile unit using this custom open-source stack:
-* **Termux Environment:** Hosted the localized Linux platform environment, compiling binary routines via `clang/gcc` and assembling `nasm` targets.
-* **Acode/Spck Editors:** Used for low-level structural code tracking, formatting C pointers, and managing remote code commits.
-* **QEMU Hardware Emulator:** Acting as the primary headless/display virtualization layer (`qemu-system-x86_64`) to test raw `os-image.bin` blocks natively on a mobile surface.
+## 🛠️ The Mobile Compilation Matrix & Cross-Toolchain
+
+The isolated system building workflow was structured entirely inside an optimized Android mobile architecture using this integrated open-source subsystem layer:
+* **Native Termux System:** The absolute backend Linux virtualization environment. Hosts the toolchain layer, managing binary routines via `clang` cross-compilers and assembling `.asm` instructions via `nasm` targets.
+* **Acode & Spck Production Editors:** Optimized workspaces configured for high-precision structural code mapping, tracking freestanding C pointers, and committing clean remote push sequences.
+* **QEMU Multi-Architecture Hardware Emulator:** Functioning as the bare-metal x86 emulator core (`qemu-system-x86_64`) to safely map, test, and execute raw `os-image.bin` block streams natively on a mobile terminal matrix.
 
 ---
 
-## 🗺️ Extended Roadmap & System Evolution
-* **Phase 1:** Complete open-source structuring of the monolithic command-line kernel core (`ROS v3.0 Final Power Edition`). *(Current Landmark)*
-* **Phase 2:** Engineering custom fsys blocks (FAT allocation logic) to enable native raw storage file structures.
-* **Phase 3:** Porting the headless ROS binary footprint onto single-board computer layouts (e.g., Raspberry Pi Architecture) to operate as a secure 24/7 web hosting and server environment.
-* **Phase 4:** Linking ROS as the fundamental bare-metal substrate driving the **Californium Ecosystem**—orchestrating P2P distributed computing grids and sovereign server arrays.
+## 🗺️ Extended System Evolution & Design Roadmap
+* **Phase 1:** Global open-source deployment and stabilization of the monolithic freestanding core layer (`ROS v3.0 Final Power Edition`). *(Current Milestone)*
+* **Phase 2:** Development of custom, self-contained raw filesystem drivers to manage structured disk data allocation logic.
+* **Phase 3:** Porting the independent, lightweight headless ROS runtime image directly onto single-board hardware architectures (e.g., Raspberry Pi Layouts) to operate as a secure, independent, 24/7 web server layer.
 
 ---
-**Chief Architect & Developer:** Rana Halder (Systems Engineer & Student)  
-**Source Code Distribution License:** GNU General Public License v2.0 (Free, Sovereign, & Open-Source Forever)
+**Chief Architect & Lead Developer:** Rana Halder (Independent Systems Engineer & Student)  
+**Source Code Distribution License:** GNU General Public License v2.0 (100% Free, Sovereign, and Open-Source for the Entire Civilization)
