@@ -112,9 +112,10 @@ llvm-objcopy -O binary kernel.elf kernel.bin && \
 cat boot.bin kernel.bin > os-image.bin && \
 dd if=/dev/zero bs=512 count=50 >> os-image.bin && \
 qemu-system-x86_64 -drive format=raw,file=os-image.bin -display curses
-
-
+...
+...
 ---
+
 
 ## 🗺️ Architectural Roadmap
 
