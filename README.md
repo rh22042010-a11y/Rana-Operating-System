@@ -103,30 +103,16 @@ pkg install clang lld nasm qemu-system-x86-64-headless llvm -y
 Run the following commands sequentially to clean, assemble, compile, and run the operating system image:
 
 ```bash
-# 1. Clear dangling emulator instances
 pkill qemu-system-x86_64
+cd ~/storage/shared/MyCustomOS
 
-# 2. Assemble the 16-bit bootloader sector
-nasm -f bin boot.asm -o boot.bin
-
-# 3. Cross-compile freestanding C kernel source for i386 target
-clang --target=i386-pc-none-elf -c kernel.c -o kernel.o \
-  -ffreestanding -fno-pie -mno-red-zone
-
-# 4. Link binary objects mapping the text address base offset
-ld.lld -m elf_i386 --omagic --image-base 0 -Ttext 0x1000 \
-  kernel_entry.o kernel.o -o kernel.elf
-
-# 5. Extract raw binary instructions from the ELF file
-llvm-objcopy -O binary kernel.elf kernel.bin
-
-# 6. Concatenate components into a unified hard-disk image
-cat boot.bin kernel.bin > os-image.bin
-dd if=/dev/zero bs=512 count=50 >> os-image.bin
-
-# 7. Execute the bare-metal simulation loop inside the terminal
+clang --target=i386-pc-none-elf -c kernel.c -o kernel.o -ffreestanding -fno-pie -mno-red-zone && \
+ld.lld -m elf_i386 --omagic --image-base 0 -Ttext 0x1000 kernel_entry.o kernel.o -o kernel.elf && \
+llvm-objcopy -O binary kernel.elf kernel.bin && \
+cat boot.bin kernel.bin > os-image.bin && \
+dd if=/dev/zero bs=512 count=50 >> os-image.bin && \
 qemu-system-x86_64 -drive format=raw,file=os-image.bin -display curses
-```
+
 
 ---
 
